@@ -14,8 +14,9 @@ class DataProviderJsonCourse:
         courseList = dict()
         connectionString = "{0}".format(
             Path.home().joinpath("Desktop",
-                                 "studentregistrationsystem-v5",
-                                 "studentregistrationsystem",
+                                 "python",
+                                 "class",
+                                 "student",
                                  "source",
                                  "data",
                                  "dataAccessJSON",

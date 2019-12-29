@@ -15,13 +15,14 @@ class DataProviderJsonProfessor:
         professorList = dict()
         connectionString = "{0}".format(
             Path.home().joinpath("Desktop",
-                                 "studentregistrationsystem-v5",
-                                 "studentregistrationsystem",
+                                 "python",
+                                 "class",
+                                 "student",
                                  "source",
                                  "data",
                                  "dataAccessJSON",
                                  "jsons",
-                                 "professorList.json"))
+                                 "courseList.json"))
 
         with open(connectionString, "w") as professorListFile:
             json.dump(professorList, professorListFile)
