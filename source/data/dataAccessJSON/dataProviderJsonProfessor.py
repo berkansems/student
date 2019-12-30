@@ -28,6 +28,7 @@ class DataProviderJsonProfessor:
             json.dump(professorList, professorListFile)
 
     def insert(self, professor):
+        global connectionString
         global professorList
         professorList[professor.getStaffId()] = professor.toJson()
         professorListFile = open(connectionString, "w")
@@ -36,6 +37,7 @@ class DataProviderJsonProfessor:
 
     def update(self, professor):
         global studentList
+        global connectionString
         for studentId, studentInfo in studentList.items():
             if studentId == professor.getStudentId():
                 currentProfessor = Professor()
@@ -53,9 +55,10 @@ class DataProviderJsonProfessor:
 
     def delete(self, id):
         global professorList
+        global connectionString
         for staffId, professorInfo in professorList.items():
             if staffId == id:
-                del studentList[id]
+                del professorList[id]
                 with open(connectionString, "w") as professorListFile:
                     json.dump(professorList, professorListFile)
                     return True
@@ -63,6 +66,7 @@ class DataProviderJsonProfessor:
 
     def getList(self):
         global professorList
+        global connectionString
         professorList.clear()
         try:
             with open(connectionString, "r") as professorListFile:
@@ -78,10 +82,10 @@ class DataProviderJsonProfessor:
                     currentProfessor.setPassword(currentInsertedProfessor["password"])
                     currentProfessor.setSalary(currentInsertedProfessor["salary"])
                     currentProfessor.setDepartment(currentInsertedProfessor["department"])
-                    studentList[currentProfessor.getStaffId()] = currentProfessor.toJson()
-                if studentList.items() == 0:
+                    professorList[currentProfessor.getStaffId()] = currentProfessor.toJson()
+                if professorList.items() == 0:
                     raise ValueError("Dosya içerisinde herhangi kayıt bulunamadı.")
-                return studentList
+                return professorList
         except FileNotFoundError as fileNotFoundError:
             return fileNotFoundError
         except ValueError as valueError:
@@ -97,7 +101,7 @@ class DataProviderJsonProfessor:
                 if staffId == id:
                     currentInsertedProfessor = json.loads(professorInfo)
                     currentProfessor = Professor()
-                    currentProfessor.setStudentId(currentInsertedProfessor["studentId"])
+                    currentProfessor.setStaffId(currentInsertedProfessor["staffId"])
                     currentProfessor.setName(currentInsertedProfessor["name"])
                     currentProfessor.setEmail(currentInsertedProfessor["email"])
                     currentProfessor.setAddress(currentInsertedProfessor["address"])

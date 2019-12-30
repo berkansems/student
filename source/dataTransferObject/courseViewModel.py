@@ -1,6 +1,3 @@
-
-
-
 class CourseViewModelInsertion:
     def __init__(self, courseCode, courseName, facultyCode, startDate, endDate, staffId):
         self.courseCode = courseCode

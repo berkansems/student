@@ -26,6 +26,8 @@ class DataProviderJsonMappingProfessorCourse:
             json.dump(professorCourseList, professorCourseListFile)
 
     def insert(self, professorCourseMapping):
+        global connectionString
+
         professorCourseList[professorCourseMapping.getMapId()] = professorCourseMapping.toJson()
         with open(connectionString, "w") as professorCourseListFile:
             json.dump(professorCourseList, professorCourseListFile)
