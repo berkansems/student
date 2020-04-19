@@ -1,4 +1,5 @@
 import json
+from json import JSONDecodeError
 from pathlib import Path
 
 from source.domain.professorCourseMapping import ProfessorCourseMapping
@@ -14,22 +15,28 @@ class DataProviderJsonMappingProfessorCourse:
         professorCourseList = dict()
         connectionString = "{0}".format(
             Path.home().joinpath("Desktop",
-                                 "python",
-                                 "class",
-                                 "student",
+                                 "studentregistrationsystem-v9",
+                                 "studentregistrationsystem",
                                  "source",
                                  "data",
                                  "dataAccessJSON",
                                  "jsons",
-                                 "courseList.json"))
-        with open(connectionString, "w") as professorCourseListFile:
-            json.dump(professorCourseList, professorCourseListFile)
+                                 "professorCourseMapping.json"))
+
+        if Path(connectionString).is_file():
+            self.getList()
+        else:
+            with open(connectionString, "w") as professorCourseListFile:
+                json.dump(professorCourseList, professorCourseListFile)
 
     def insert(self, professorCourseMapping):
-        professorCourseList[professorCourseMapping.getMapId()] = professorCourseMapping.toJson()
-        with open(connectionString, "w") as professorCourseListFile:
-            json.dump(professorCourseList, professorCourseListFile)
-            return True
+        try:
+            professorCourseList[professorCourseMapping.getMapId()] = professorCourseMapping.toJson()
+            with open(connectionString, "w") as professorCourseListFile:
+                json.dump(professorCourseList, professorCourseListFile)
+                return True
+        except:
+            return False
 
     def update(self, professorCourseMapping):
         for mapId, professorCourseMappingInfo in professorCourseList.items():
@@ -57,7 +64,7 @@ class DataProviderJsonMappingProfessorCourse:
         with open(connectionString, "r") as professorCourseListFile:
             professorCourseListFromFile = dict(json.load(professorCourseListFile))
             for map_Id, professorCourseMappingInfo in professorCourseListFromFile.items():
-                if mapId == map_Id:
+                if mapId == int(map_Id):
                     currentInsertedProfessorCourseMapping = json.loads(professorCourseMappingInfo)
                     currentProfessorCourseMapping = ProfessorCourseMapping()
                     currentProfessorCourseMapping.setMapId(currentInsertedProfessorCourseMapping["mapId"])
@@ -68,13 +75,16 @@ class DataProviderJsonMappingProfessorCourse:
 
     def getList(self):
         professorCourseList.clear()
-        with open(connectionString, "r") as professorCourseListFile:
-            professorCourseListFromFile = dict(json.load(professorCourseListFile))
-            for mapId, professorCourseMappingInfo in professorCourseListFromFile.items():
-                currentInsertedProfessorCourseMapping = json.loads(professorCourseMappingInfo)
-                currentProfessorCourseMapping = ProfessorCourseMapping()
-                currentProfessorCourseMapping.setMapId(currentInsertedProfessorCourseMapping["mapId"])
-                currentProfessorCourseMapping.setCourseCode(currentInsertedProfessorCourseMapping["courseCode"])
-                currentProfessorCourseMapping.setStaffId(currentInsertedProfessorCourseMapping["staffId"])
-                professorCourseList[mapId] = currentProfessorCourseMapping.toJson()
-            return professorCourseList
+        try:
+            with open(connectionString, "r") as professorCourseListFile:
+                professorCourseListFromFile = dict(json.load(professorCourseListFile))
+                for mapId, professorCourseMappingInfo in professorCourseListFromFile.items():
+                    currentInsertedProfessorCourseMapping = json.loads(professorCourseMappingInfo)
+                    currentProfessorCourseMapping = ProfessorCourseMapping()
+                    currentProfessorCourseMapping.setMapId(currentInsertedProfessorCourseMapping["mapId"])
+                    currentProfessorCourseMapping.setCourseCode(currentInsertedProfessorCourseMapping["courseCode"])
+                    currentProfessorCourseMapping.setStaffId(currentInsertedProfessorCourseMapping["staffId"])
+                    professorCourseList[mapId] = currentProfessorCourseMapping.toJson()
+                return professorCourseList
+        except JSONDecodeError as jde:
+            return jde

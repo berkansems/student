@@ -15,17 +15,20 @@ class DataProviderJsonProfessor:
         professorList = dict()
         connectionString = "{0}".format(
             Path.home().joinpath("Desktop",
-                                 "python",
-                                 "class",
-                                 "student",
+                                 "studentregistrationsystem-v9",
+                                 "studentregistrationsystem",
                                  "source",
                                  "data",
                                  "dataAccessJSON",
                                  "jsons",
-                                 "courseList.json"))
+                                 "professorList.json"))
 
-        with open(connectionString, "w") as professorListFile:
-            json.dump(professorList, professorListFile)
+
+        if Path(connectionString).is_file():
+            self.getList()
+        else:
+            with open(connectionString, "w") as professorListFile:
+                json.dump(professorList, professorListFile)
 
     def insert(self, professor):
         global professorList
@@ -35,9 +38,9 @@ class DataProviderJsonProfessor:
         return True
 
     def update(self, professor):
-        global studentList
-        for studentId, studentInfo in studentList.items():
-            if studentId == professor.getStudentId():
+        global professorList
+        for staffId, studentInfo in professorList.items():
+            if staffId == professor.getStaffId():
                 currentProfessor = Professor()
                 currentProfessor.setStaffId(professor.getStaffId())
                 currentProfessor.setName(professor.getName())
@@ -45,6 +48,7 @@ class DataProviderJsonProfessor:
                 currentProfessor.setContactNumber(professor.getContactNumber())
                 currentProfessor.setEmail(professor.getEmail())
                 currentProfessor.setAddress(professor.getAddress())
+                currentProfessor.setSalary(professor.getSalary())
                 professorList[currentProfessor.getStaffId()] = currentProfessor.toJson()
                 with open(connectionString, "w") as professorListFile:
                     json.dump(professorList, professorListFile)
@@ -55,7 +59,7 @@ class DataProviderJsonProfessor:
         global professorList
         for staffId, professorInfo in professorList.items():
             if staffId == id:
-                del studentList[id]
+                del professorList[id]
                 with open(connectionString, "w") as professorListFile:
                     json.dump(professorList, professorListFile)
                     return True
@@ -78,10 +82,10 @@ class DataProviderJsonProfessor:
                     currentProfessor.setPassword(currentInsertedProfessor["password"])
                     currentProfessor.setSalary(currentInsertedProfessor["salary"])
                     currentProfessor.setDepartment(currentInsertedProfessor["department"])
-                    studentList[currentProfessor.getStaffId()] = currentProfessor.toJson()
-                if studentList.items() == 0:
+                    professorList[currentProfessor.getStaffId()] = currentProfessor.toJson()
+                if professorList.items() == 0:
                     raise ValueError("Dosya içerisinde herhangi kayıt bulunamadı.")
-                return studentList
+                return professorList
         except FileNotFoundError as fileNotFoundError:
             return fileNotFoundError
         except ValueError as valueError:
@@ -94,14 +98,16 @@ class DataProviderJsonProfessor:
         with open(connectionString, "r") as professorListFile:
             professorListFromFile = dict(json.load(professorListFile))
             for staffId, professorInfo in professorListFromFile.items():
-                if staffId == id:
+                if int(staffId) == int(id):
                     currentInsertedProfessor = json.loads(professorInfo)
                     currentProfessor = Professor()
-                    currentProfessor.setStudentId(currentInsertedProfessor["studentId"])
+                    currentProfessor.setStaffId(currentInsertedProfessor["staffId"])
                     currentProfessor.setName(currentInsertedProfessor["name"])
                     currentProfessor.setEmail(currentInsertedProfessor["email"])
                     currentProfessor.setAddress(currentInsertedProfessor["address"])
                     currentProfessor.setContactNumber(currentInsertedProfessor["contactNumber"])
                     currentProfessor.setPassword(currentInsertedProfessor["password"])
+                    currentProfessor.setSalary(currentInsertedProfessor["salary"])
+                    currentProfessor.setDepartment(currentInsertedProfessor["department"])
                     return currentProfessor
             return False

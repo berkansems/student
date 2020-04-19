@@ -14,17 +14,20 @@ class DataProviderJsonStudent:
         studentList = dict()
         connectionString = "{0}".format(
             Path.home().joinpath("Desktop",
-                                 "python",
-                                 "class",
-                                 "student",
+                                 "studentregistrationsystem-v9",
+                                 "studentregistrationsystem",
                                  "source",
                                  "data",
                                  "dataAccessJSON",
                                  "jsons",
-                                 "courseList.json"))
+                                 "studentList.json"))
 
-        with open(connectionString, "w") as studentListFile:
-            json.dump(studentList, studentListFile)
+        if Path(connectionString).is_file():
+            self.getList()
+        else:
+            with open(connectionString, "w") as studentListFile:
+                json.dump(studentList, studentListFile)
+
 
     def insert(self, student):
         global studentList
@@ -32,6 +35,7 @@ class DataProviderJsonStudent:
         studentListFile = open(connectionString, "w")
         json.dump(studentList, studentListFile)
         return True
+
 
     def update(self, student):
         global studentList
@@ -50,6 +54,7 @@ class DataProviderJsonStudent:
                 return True
         return False
 
+
     def delete(self, id):
         global studentList
         for studentId, studentInfo in studentList.items():
@@ -59,6 +64,7 @@ class DataProviderJsonStudent:
                     json.dump(studentList, studentListFile)
                     return True
         return False
+
 
     def getList(self):
         global studentList
@@ -76,7 +82,7 @@ class DataProviderJsonStudent:
                     currentStudent.setContactNumber(currentInsertedStudent["contactNumber"])
                     currentStudent.setPassword(currentInsertedStudent["password"])
                     studentList[currentStudent.getStudentId()] = currentStudent.toJson()
-                    #result = 1 / 0
+                    # result = 1 / 0
                 if studentList.items() == 0:
                     raise ValueError("Dosya içerisinde herhangi kayıt bulunamadı.")
                 return studentList

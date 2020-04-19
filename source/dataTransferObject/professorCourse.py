@@ -1,8 +1,6 @@
-import json
 
 
-class ProfessorCourseMapping:
-
+class ProfessorCourseInsertionViewModel:
     def __init__(self, mapId=0, staffId=0, courseCode=""):
         self.mapId = mapId
         self.staffId = staffId
@@ -26,8 +24,6 @@ class ProfessorCourseMapping:
     def getCourseCode(self):
         return self.courseCode
 
-    def toJson(self):
-        return json.dumps(self, default=lambda professorCourseMapping: professorCourseMapping.__dict__, sort_keys=True)
 
     def __str__(self) -> str:
         return "mapId={mapId},staffId={staffId},courseCode={courseCode}".format(
