@@ -1,17 +1,29 @@
 import json
 
 
+# unitPrice,totalHour
 class Course:
-    def __init__(self, courseCode, courseName, facultyCode, startDate, endDate, staffId):
+    def __init__(self, courseCode=None, courseName=None, facultyCode=None, startDate=None, endDate=None, unitPrice=None,
+                 totalHour=None):
         self.courseCode = courseCode
         self.courseName = courseName
         self.facultyCode = facultyCode
         self.startDate = startDate
         self.endDate = endDate
-        self.staffId = staffId
+        self.unitPrice = unitPrice
+        self.totalHour = totalHour
 
-    def setStaffId(self, staffId):
-        self.staffId = staffId
+    def setUnitPrice(self, unitPrice):
+        self.unitPrice = unitPrice
+
+    def getUnitPrice(self):
+        return self.unitPrice
+
+    def setTotalHour(self, totalHour):
+        self.totalHour = totalHour
+
+    def getTotalHour(self):
+        return self.totalHour
 
     def setCourseCode(self, courseCode):
         self.courseCode = courseCode
@@ -43,17 +55,13 @@ class Course:
     def getEndDate(self):
         return self.endDate
 
-    def getStaffId(self):
-        return self.staffId
-
     def __str__(self) -> str:
-        return "courseCode={courseCode},courseName={courseName},facultyCode={facultyCode},startDate={startDate},endDate={endDate},staffId={staffId}".format(
+        return "courseCode={courseCode},courseName={courseName},facultyCode={facultyCode},startDate={startDate},endDate={endDate}".format(
             courseCode=self.courseCode,
             courseName=self.courseName,
             facultyCode=self.facultyCode,
             startDate=self.startDate,
-            endDate=self.endDate,
-            staffId=self.staffId)
+            endDate=self.endDate)
 
     def toJson(self):
         return json.dumps(self, default=lambda course: course.__dict__, sort_keys=True)

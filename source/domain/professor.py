@@ -37,7 +37,7 @@ class Professor(User):
 
     def __str__(self) -> str:
         return super().__str__() + "StaffId = {staffId}, Salary= {salary},Department={department}".format(
-            staffId= self.staffId, salary=self.salary,department= self.department
+            staffId =self.staffId, salary=self.salary, department=self.department
         )
     def toJson(self):
-        return json.dumps(self, default=lambda student: student.__dict__, sort_keys=True)
+        return json.dumps(self, default=lambda professor: professor.__dict__, sort_keys=True)

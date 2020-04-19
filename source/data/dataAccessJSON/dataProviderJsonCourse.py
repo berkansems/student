@@ -14,23 +14,28 @@ class DataProviderJsonCourse:
         courseList = dict()
         connectionString = "{0}".format(
             Path.home().joinpath("Desktop",
-                                 "python",
-                                 "class",
-                                 "student",
+                                 "studentregistrationsystem-v9",
+                                 "studentregistrationsystem",
                                  "source",
                                  "data",
                                  "dataAccessJSON",
                                  "jsons",
                                  "courseList.json"))
-        with open(connectionString, "w") as courseListFile:
-            json.dump(courseList, courseListFile)
+
+        if Path(connectionString).is_file():
+            self.getList()
+        else:
+            with open(connectionString, "w") as courseListFile:
+                json.dump(courseList, courseListFile)
 
     def insert(self, course):
         courseList[course.getCourseCode()] = course.toJson()
-        with open(connectionString, "w") as courseListFile:
-            json.dump(courseList, courseListFile)
-            return True
-        return False
+        try:
+            with open(connectionString, "w") as courseListFile:
+                json.dump(courseList, courseListFile)
+                return True
+        except:
+            return False
 
     def update(self, course):
         for courseCode, courseInfo in courseList.items():
@@ -54,7 +59,7 @@ class DataProviderJsonCourse:
                 with open(connectionString, "w") as courseListFile:
                     json.dump(courseList, courseListFile)
                     return True
-            return False
+        return False
 
     def getList(self):
         courseList.clear()
@@ -85,5 +90,3 @@ class DataProviderJsonCourse:
                     currentCourse.setCourseName(currentInsertedCourse["courseName"])
                     return currentCourse
         return False
-
-

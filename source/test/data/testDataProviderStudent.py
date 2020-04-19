@@ -33,15 +33,15 @@ student3.setEmail("mesut@gmail.com")
 # first insertion
 print("*************Insert**************")
 currentStudentList = dataProviderStudent.insert(student1)
-print(currentStudentList[1])
+print(currentStudentList)
 
 # second insertion
 currentStudentList = dataProviderStudent.insert(student2)
-print(currentStudentList[2])
+print(currentStudentList)
 
 # third insertion
 currentStudentList = dataProviderStudent.insert(student3)
-print(currentStudentList[3])
+print(currentStudentList)
 
 # update
 student1.setName("Osman")
@@ -51,9 +51,9 @@ student2.setName("Burak")
 student2.setEmail("burak@gmail.com")
 currentStudentList = dataProviderStudent.update(student2)
 print("*************Update**************")
-print(currentStudentList[1])
-print(currentStudentList[2])
-print(currentStudentList[3])
+print(currentStudentList)
+print(currentStudentList)
+print(currentStudentList)
 
 print("*************Delete**************")
 isSuccess = dataProviderStudent.delete(1)
